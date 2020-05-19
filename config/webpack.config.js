@@ -124,6 +124,15 @@ module.exports = function(webpackEnv) {
           options: {
             sourceMap: true,
           },
+        },
+        {
+          loader: require.resolve('less-loader'),
+          options: {
+            lessOptions: {
+              modifyVars: { '@primary-color': '#1DA57A' },
+              javascriptEnabled: true,
+            }
+          }
         }
       );
     }
