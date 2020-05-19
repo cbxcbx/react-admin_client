@@ -1,18 +1,26 @@
 import React from 'react';
-import { Button } from 'antd';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+// import { Button, message } from 'antd';
+import Login from './pages/login/login.js'
+import Admin from './pages/admin/admin.js'
 import 'antd/dist/antd.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Button type="primary">Learn React</Button>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  // }
+
+
+  render() {
+    return (
+      <Router>
+        <Switch>
+          <Route path="/login"><Login /></Route>
+          <Route path="/admin"><Admin /></Route>
+        </Switch>
+      </Router>
+    )
+  }
 }
 
 export default App;
