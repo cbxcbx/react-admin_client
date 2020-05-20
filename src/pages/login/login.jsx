@@ -3,10 +3,15 @@ import { Form, Input, Button } from "antd";
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './login.less';
 import Logo from './images/logo.png';
-
+import { reqLogin } from '../../api'
 class Login extends Component {
   onFinish = values => {
-    console.log('Success', values);
+    let { username, password } = values;
+    reqLogin(username, password).then((res) => {
+      console.log(res.data);
+    }).catch(error => {
+      console.log(error);
+    })
   };
   onFinishFailed = errorInfo => {
     console.log('error', errorInfo);
