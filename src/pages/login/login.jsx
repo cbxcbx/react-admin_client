@@ -1,22 +1,40 @@
 import React, { Component } from 'react';
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Redirect } from 'react-router-dom';
 import './login.less';
 import Logo from './images/logo.png';
 import { reqLogin } from '../../api'
+import memoryUtils from '../../utils/memoryUtils';
+import storageUtils from '../../utils/storageUtils';
+
 class Login extends Component {
   onFinish = values => {
     let { username, password } = values;
+
     reqLogin(username, password).then((res) => {
-      console.log(res.data);
+      if (res.status === 0) {
+        message.success('登录成功');
+        memoryUtils.user = res.data;
+        storageUtils.setUser(res.data);
+        this.props.history.replace('/');
+      } else {
+        message.error('登录失败，用户信息有错误');
+      }
     }).catch(error => {
       console.log(error);
     })
-  };
-  onFinishFailed = errorInfo => {
-    console.log('error', errorInfo);
   }
+
+  onFinishFailed = errorInfo => {
+    message.error('请先填写正确的用户名和密码！')
+  }
+
   render() {
+    const user = memoryUtils.user;
+    if(user && user._id) {
+      return <Redirect to="/admin" />
+    }
     return (
       <div className="login">
         <header className="login-header">
