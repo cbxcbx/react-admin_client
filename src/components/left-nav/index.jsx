@@ -23,6 +23,7 @@ const { SubMenu } = Menu;
 
 class LeftNav extends Component {
   getMenuNodes = (List) => {
+    let path = this.props.location.pathname;
     return List.map((item) => {
       if (!item.children) {
         return (
@@ -31,6 +32,12 @@ class LeftNav extends Component {
           </Menu.Item>
         )
       } else {
+        let CItem = item.children.find(itemKey => {
+          return itemKey.key === path ;
+        });
+        if(CItem) {
+          this.openKey = item.key;
+        }
         return (
           <SubMenu key={item.key} icon={this.getMenuIcon(item.icon)} title={item.title}>
             {this.getMenuNodes(item.children)}
@@ -77,6 +84,9 @@ class LeftNav extends Component {
     }
     return component
   }
+  componentWillMount() {
+    this.menuNodes = this.getMenuNodes(menuList);
+  }
   render() {
     let path = this.props.location.pathname;
     return (
@@ -89,8 +99,9 @@ class LeftNav extends Component {
           mode="inline"
           theme="dark"
           selectedKeys={[path]}
+          defaultOpenKeys={[this.openKey]}
         >
-          {this.getMenuNodes(menuList)}
+          {this.menuNodes}
         </Menu>
       </div>
     );
